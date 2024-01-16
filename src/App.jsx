@@ -144,6 +144,8 @@ function App() {
         
         
       }
+
+      setAllCards(false)
       
     })
     console.log(searchResult.length)
@@ -151,6 +153,10 @@ function App() {
   
   const homeHandler = () =>{
     setAllCards(true);
+  }
+
+  const noResultHandler = () =>{
+    setAllCards(false);
   }
   return (
     <main className={`py-6 ${styles.main}`}>
@@ -180,18 +186,11 @@ function App() {
            ))
         }
        </ul>
-        ) : (null)
+        ) : (<p className='mt-4 text-slate-400 font-bold'>No results!</p>)
        }
+        
 
-          {
-            searchResult.length>0 && (
-            <>
-            <p className='mt-4 text-slate-400 font-bold'>Found {searchResult.length} results</p>
-            
-            </>
-            )
-
-          }
+           
 
           
 
@@ -201,7 +200,7 @@ function App() {
                 
                 return(
                   <>
-                  
+                  <p className='mt-4 text-slate-400 font-bold'>Found {searchResult.length} results</p>
                   <Book image={book.image} title={book.title} author={book.author} lang={book.language} pages={book.pages}></Book>
                   </>
                 )
@@ -209,7 +208,7 @@ function App() {
                 //   card.title
                 // )
               })
-            ) :(null)
+            ) :(noResultHandler)
               
           }
       
