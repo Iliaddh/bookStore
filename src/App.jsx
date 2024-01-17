@@ -268,7 +268,7 @@ function App() {
                 return(
                   <>
                   
-                  <Book image={book.image} title={book.title} author={book.author} lang={book.language} pages={book.pages}></Book>
+                  <Book key={book.id} data={book} handleLikedList={handleLikedList}></Book>
                   </>
                 )
                 // console.log(
