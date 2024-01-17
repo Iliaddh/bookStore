@@ -1,0 +1,35 @@
+@media (min-width: 1270px){
+    .card{
+        max-width:800px;
+    }
+    
+}
+
+@media (max-width: 1260px){
+    .card{
+        max-width:400px;
+    }
+}
+
+@media (max-width: 770px){
+    .card{
+        max-width:300px;
+    }
+    .card p{
+        font-size: 12px;
+    }
+    
+
+   
+}
+
+@media (max-width: 670px){
+    .card{ 
+        width: 220px;
+    }
+
+    
+    
+
+   
+}

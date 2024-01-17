@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+/* Add this CSS for the heart scale animation */
+.heart-scale-animation {
+    transform-origin: center;
+    transition: transform 0.3s ease-in-out;
+  }
+  
+  .heart-scale-animation:hover {
+    transform: scale(1.2);
+  }
+  

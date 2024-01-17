@@ -1,4 +1,5 @@
-import { useState } from 'react' 
+import { useState } from 'react' ;
+import Favorites from './favorites';
 import './App.css';
 import search from "./assets/search.png";
 import styles from "./app.module.css";
@@ -13,6 +14,7 @@ import seven from "./assets/7.png";
 import eight from "./assets/8.png";
 import nine from "./assets/9.png";
 import ten from "./assets/10.png"; 
+ 
 
 const books = [
   {
@@ -139,57 +141,122 @@ function App() {
       if(book.title.toLowerCase().trim().includes(searchValue)){ 
         setAllCards(false);
         results.push(book);
-        setSearchResult(results);
+        setSearchResult(results); 
         
         
+      }else if(!(book.title.toLowerCase().trim().includes(searchValue))){
+        setAllCards(false);
+        // searchResult.length =0
         
       }
-
-      setAllCards(false)
+      searchResult.length =0
+      
+      
       
     })
     console.log(searchResult.length)
   }
+
+
+  
   
   const homeHandler = () =>{
+    searchResult.length = 0;
     setAllCards(true);
   }
 
   const noResultHandler = () =>{
+    searchResult.length = 0;
     setAllCards(false);
   }
+  
+  //lifting state up - favorite box
+  const [liked, setLike] = useState([]);
+  const handleLikedList = (book, status) =>{
+    if(status){
+       const newLikedList = liked.filter(i => i.id !== book.id);
+       setLike(newLikedList);
+    }else{
+      setLike(liked => [...liked, book]);
+    }
+  }
+
   return (
-    <main className={`py-6 ${styles.main}`}>
+    <main className={`py-6 mx-4`}>
       <nav className='w-full full flex justify-center '>
         <div className='flex justify-between w-full bg-gray-700 p-3 rounded-lg'>
           <button onClick={homeHandler}><div className='flex justify-center'><p className='text-white bold text-lg'>Book App</p></div></button>
-          <div className='flex justify-center'><p>Hemmatjoo|Portfolio</p></div>
+          <div className='flex justify-center'><p>Hemmatjoo | Portfolio</p></div>
         </div>
       </nav>
 
       <div>
-        <div className='flex mt-12'>
-          <input id='searchInput' type='text' placeholder='Search title' className='rounded bg-gray-200 p-1 focus:border-black' ></input>
-          <div className=' ml-2'><img src={search} className='w-8 h-8 bg-indigo-600 rounded-lg cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-110' onClick={searchHandler}/></div>
+        <div className=' mt-12'>
+          <label><p>Search a book: </p></label>
+          <br></br>
+          
+          <div className=' flex justify-between'>
+            <div className='flex'>
+            <input id='searchInput' type='text' placeholder='Search title' className='rounded bg-gray-200 p-1 focus:border-black' ></input>
+            <img src={search} className='w-8 h-8 bg-indigo-600 rounded-lg cursor-pointer transition-transform duration-300 ease-in-out transform hover:scale-110 ml-2'onClick={searchHandler} />
+            </div>
+            <div className='cursor-pointer mr-12'><p className='text-slate-300 border-b-2 border-gray-500'  >Favorites</p></div>
+          </div>
         </div>
       </div>
 
-      
+      {
+        (!allCards ) &&(
+          <> 
+          <p className='text-slate-300 mt-5 text-lg'>No results!</p>
+          <p className=' text-slate-300 border-b-2 border-gray-500 w-24 cursor-pointer mt-2' onClick={homeHandler}>Return home</p>
+          </>
+        )
+       }
+
+
+       
+
+       {!!liked.length && (
+        <div className={`bg-indigo-500 p-4 rounded-lg   float-right mr-10 mt-6 ${styles.favoritesBox}`} >
+          {liked.map(book => 
+            <Favorites key={book.id} data={book} ></Favorites>
+        )}
+       </div>
+         
+       )}
+
+
+
+
        {
         allCards ? (
-          <ul className='mt-8 h-full'>
+          <ul className={`mt-8 h-full ${styles.main}`}>
         {
            books.map((book) =>(
-            <li key={book.id} >
-              <Book image={book.image} title={book.title} author={book.author} lang={book.language} pages={book.pages}></Book>
+            <li key={book.id} className={styles.main} >
+              <Book key={book.id} data={book} handleLikedList={handleLikedList} ></Book>
             </li>
            ))
         }
        </ul>
-        ) : (<p className='mt-4 text-slate-400 font-bold'>No results!</p>)
+        ) : (
+          null
+        )
        }
+
+       
+
+        
         
 
+{
+
+  searchResult.length> 0 ? (
+    <p className='mt-4 text-slate-400 font-bold'>Found {searchResult.length} results</p>
+  ) : (null
+  )
+}
            
 
           
@@ -200,7 +267,7 @@ function App() {
                 
                 return(
                   <>
-                  <p className='mt-4 text-slate-400 font-bold'>Found {searchResult.length} results</p>
+                  
                   <Book image={book.image} title={book.title} author={book.author} lang={book.language} pages={book.pages}></Book>
                   </>
                 )
@@ -212,10 +279,11 @@ function App() {
               
           }
       
-       
+      
 
     </main>
   )
 }
 
-export default App
+export default App;
+
